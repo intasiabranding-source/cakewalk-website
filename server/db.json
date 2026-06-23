@@ -1,0 +1,318 @@
+{
+  "hero": {
+    "tagline": "✨ TURNING SWEET MOMENTS INTO BEAUTIFUL MEMORIES",
+    "heading": "Freshly Baked Cakes, Brownies & Custom Creations",
+    "subtext": "Crafted with premium organic ingredients, deep love, and obsessive attention to detail. Perfect designs to elevate your luxury celebrations.",
+    "image": ""
+  },
+  "story": {
+    "heading": "The Story Behind Cake Walk",
+    "paragraph1": "Cake Walk started from a deep, heartfelt passion for baking and creating pure happiness through handcrafted desserts. What began as baking homemade treats for family and close friends gradually bloomed into a luxury home bakery business.",
+    "paragraph2": "Today, we are dedicated to delivering beautiful, custom-designed, and remarkably delicious cakes that act as the centerpiece for your most special life celebrations. Every batter is whisked by hand, every layer is assembled with care, and only premium ingredients find their way into our ovens.",
+    "bioQuote": "Focused on making fresh, high-quality cakes and desserts that bring genuine joy to our customers and make their celebrations truly unforgettable.",
+    "image": ""
+  },
+  "menuItems": [
+    {
+      "id": "fc-1",
+      "name": "Vanilla Cake",
+      "price": 650,
+      "category": "Fresh Cream Cakes",
+      "tag": "Classic",
+      "desc": "Fluffy vanilla sponge layered with rich white cream and Madagascar vanilla bean.",
+      "image": ""
+    },
+    {
+      "id": "fc-2",
+      "name": "Chocolate Cake",
+      "price": 900,
+      "category": "Fresh Cream Cakes",
+      "tag": "Chocolate",
+      "desc": "Decadent chocolate sponge smothered in velvety milk chocolate ganache.",
+      "image": ""
+    },
+    {
+      "id": "fc-3",
+      "name": "Butterscotch Cake",
+      "price": 1100,
+      "category": "Fresh Cream Cakes",
+      "tag": "Classic",
+      "desc": "Rich cake with crunchy caramelized butterscotch pieces and soft cream.",
+      "image": ""
+    },
+    {
+      "id": "fc-4",
+      "name": "Coffee Mocha Cake",
+      "price": 1250,
+      "category": "Fresh Cream Cakes",
+      "tag": "Premium",
+      "desc": "Fresh espresso-infused sponge with silky chocolate cream layers.",
+      "image": ""
+    },
+    {
+      "id": "fc-5",
+      "name": "Double Chocolate Cake",
+      "price": 1200,
+      "category": "Fresh Cream Cakes",
+      "tag": "Chocolate",
+      "desc": "Triple layer indulgence for true chocolate purists.",
+      "image": ""
+    },
+    {
+      "id": "fc-6",
+      "name": "Pistachio Cake",
+      "price": 1250,
+      "category": "Fresh Cream Cakes",
+      "tag": "Premium",
+      "desc": "Exquisite pistachio flour sponge with real toasted pistachio buttercream.",
+      "image": ""
+    },
+    {
+      "id": "fc-7",
+      "name": "Rasmalai Cake",
+      "price": 1250,
+      "category": "Fresh Cream Cakes",
+      "tag": "Premium",
+      "desc": "A royal fusion cake soaked in cardamom saffron milk and topped with fresh rasmalai.",
+      "image": ""
+    },
+    {
+      "id": "fc-8",
+      "name": "Gulab Jamun Cake",
+      "price": 1100,
+      "category": "Fresh Cream Cakes",
+      "tag": "Classic",
+      "desc": "Rich cardamom sponge layered with sweet gulab jamun pieces and rose cream.",
+      "image": ""
+    },
+    {
+      "id": "dc-1",
+      "name": "Double Chocolate Dream Cake",
+      "price": 850,
+      "category": "Dream Cakes",
+      "tag": "Chocolate",
+      "desc": "Indulgent 5-layer tin cake with chocolate ganache, mousse, and a crispy crack top.",
+      "image": ""
+    },
+    {
+      "id": "dc-2",
+      "name": "Pistachio Dream Cake",
+      "price": 990,
+      "category": "Dream Cakes",
+      "tag": "Premium",
+      "desc": "Layers of premium pistachio paste, soft cream, chocolate shell, and toasted pistachios.",
+      "image": ""
+    },
+    {
+      "id": "dc-3",
+      "name": "Rasmalai Dream Cake",
+      "price": 950,
+      "category": "Dream Cakes",
+      "tag": "Premium",
+      "desc": "Royal fusion with saffron cream, soaked cardamom sponge, and velvety white chocolate.",
+      "image": ""
+    },
+    {
+      "id": "dc-4",
+      "name": "Gulab Jamun Dream Cake",
+      "price": 890,
+      "category": "Dream Cakes",
+      "tag": "Classic",
+      "desc": "Indulgence in a tin with Gulab Jamun layers, rose ganache, and cardamom crumble.",
+      "image": ""
+    },
+    {
+      "id": "dc-5",
+      "name": "Rose Milk Dream Cake",
+      "price": 850,
+      "category": "Dream Cakes",
+      "tag": "Premium",
+      "desc": "Soft pink sponge soaked in sweet rose milk with a crisp white chocolate shell.",
+      "image": ""
+    },
+    {
+      "id": "dc-6",
+      "name": "Coffee Mocha Dream Cake",
+      "price": 890,
+      "category": "Dream Cakes",
+      "tag": "Chocolate",
+      "desc": "Silky espresso cream, chocolate fudge, and dusting of high-quality cocoa powder.",
+      "image": ""
+    },
+    {
+      "id": "dc-7",
+      "name": "Ferrero Rocher Dream Cake",
+      "price": 1050,
+      "category": "Dream Cakes",
+      "tag": "Chocolate",
+      "desc": "Crunchy hazelnut praline, milk chocolate glaze, and toasted caramelized nuts.",
+      "image": ""
+    },
+    {
+      "id": "dp-1",
+      "name": "Chocolate Mousse Cup",
+      "price": 150,
+      "category": "Dessert Cups",
+      "tag": "Chocolate",
+      "desc": "Silky dark chocolate mousse topped with fine cocoa nibs.",
+      "image": ""
+    },
+    {
+      "id": "dp-2",
+      "name": "Oreo Dessert Cup",
+      "price": 150,
+      "category": "Dessert Cups",
+      "tag": "Chocolate",
+      "desc": "Creamy vanilla mousse layered with crushed Oreo cookies.",
+      "image": ""
+    },
+    {
+      "id": "dp-3",
+      "name": "Lotus Biscoff Dessert Cup",
+      "price": 180,
+      "category": "Dessert Cups",
+      "tag": "Premium",
+      "desc": "Decadent Biscoff spread and whipped cream with crunchy cookie crumbs.",
+      "image": ""
+    },
+    {
+      "id": "dp-4",
+      "name": "Red Velvet Dessert Cup",
+      "price": 180,
+      "category": "Dessert Cups",
+      "tag": "Premium",
+      "desc": "Vibrant red velvet cake crumbs layered with sweet cream cheese frosting.",
+      "image": ""
+    },
+    {
+      "id": "tl-1",
+      "name": "Rose Milk Tres Leches",
+      "price": 90,
+      "category": "Tres Leches",
+      "tag": "Premium",
+      "desc": "Sponge cake soaked in sweet rose-infused milk and topped with fresh cream.",
+      "image": ""
+    },
+    {
+      "id": "tl-2",
+      "name": "Milk Tres Leches",
+      "price": 90,
+      "category": "Tres Leches",
+      "tag": "Classic",
+      "desc": "Classic three-milk cake with light vanilla whipping and berries.",
+      "image": ""
+    },
+    {
+      "id": "tl-3",
+      "name": "Coffee Tres Leches",
+      "price": 110,
+      "category": "Tres Leches",
+      "tag": "Classic",
+      "desc": "Espresso three-milk soak topped with a delicate dusting of premium cocoa.",
+      "image": ""
+    },
+    {
+      "id": "tl-4",
+      "name": "Lotus Biscoff Tres Leches",
+      "price": 110,
+      "category": "Tres Leches",
+      "tag": "Premium",
+      "desc": "Rich biscoff-flavored milk soak topped with a biscoff spread swirl.",
+      "image": ""
+    },
+    {
+      "id": "tl-5",
+      "name": "Pistachio Tres Leches",
+      "price": 110,
+      "category": "Tres Leches",
+      "tag": "Premium",
+      "desc": "Real pistachio nut milk soak decorated with crushed toasted pistachios.",
+      "image": ""
+    },
+    {
+      "id": "br-1",
+      "name": "Brownie Bites",
+      "price": 200,
+      "category": "Brownies",
+      "tag": "Classic",
+      "desc": "Fudgy bite-sized chocolate brownie chunks perfect for snacking.",
+      "image": ""
+    },
+    {
+      "id": "br-2",
+      "name": "Brownie Balls",
+      "price": 99,
+      "category": "Brownies",
+      "tag": "Classic",
+      "desc": "Coated chocolate brownie truffles rolled in sprinkles and hazelnuts.",
+      "image": ""
+    },
+    {
+      "id": "br-3",
+      "name": "Chocolate Ganache Brownies",
+      "price": 250,
+      "category": "Brownies",
+      "tag": "Chocolate",
+      "desc": "Signature rich, fudgy brownie slab topped with thick dark ganache.",
+      "image": ""
+    },
+    {
+      "id": "br-4",
+      "name": "Assorted Brownies Box",
+      "price": 450,
+      "category": "Brownies",
+      "tag": "Premium",
+      "desc": "A sampler box of chocolate chip, walnut, and biscoff brownies.",
+      "image": ""
+    },
+    {
+      "id": "br-5",
+      "name": "Brownie Tower",
+      "price": 1200,
+      "category": "Brownies",
+      "tag": "Premium",
+      "desc": "A showstopping stack of 12 fudgy brownies decorated with chocolate drizzle.",
+      "image": ""
+    }
+  ],
+  "specials": [
+    {
+      "id": "sp-1",
+      "name": "Cookie Pie",
+      "price": 350,
+      "category": "Special Desserts",
+      "tag": "Popular",
+      "desc": "Deep-dish cookie loaded with Belgian chocolate chips and a gooey chocolate fudge core.",
+      "image": ""
+    },
+    {
+      "id": "sp-2",
+      "name": "Brookies (Brownie + Cookie)",
+      "price": 280,
+      "category": "Special Desserts",
+      "tag": "Best Seller",
+      "desc": "The ultimate hybrid—half rich chocolate fudge brownie, half chewy chocolate chip cookie.",
+      "image": ""
+    },
+    {
+      "id": "sp-3",
+      "name": "Mini Dessert Box",
+      "price": 550,
+      "category": "Special Desserts",
+      "tag": "Gifting Special",
+      "desc": "A curated selection of dessert cups, brownie bites, and premium macarons.",
+      "image": ""
+    }
+  ],
+  "marquee": [
+    "✨ CUSTOM DESIGNS AVAILABLE",
+    "FRESHLY BAKED TO ORDER",
+    "PREMIUM INGREDIENTS ONLY",
+    "MADE WITH LOVE",
+    "PACKED WITH FLAVOR"
+  ],
+  "adminPassword": "cakewalkbyIndhu@1",
+  "orders": [],
+  "stories": [],
+  "reviews": []
+}

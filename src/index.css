@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    overflow-x: hidden;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
+  }
+}
+
+/* Custom Premium Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #EFE6DE; /* Cream Vanilla base */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #9A0002; /* Cherry Cola */
+  border-radius: 9999px;
+  border: 2px solid #EFE6DE;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #C81D1F; /* Tomato Burst Red */
+}
+
+/* Ambient glow blobs in the background */
+.ambient-glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.4;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Subtle micro-interaction animations */
+.transition-luxury {
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Text outline effect for luxury headers */
+.text-stroke {
+  -webkit-text-stroke: 1px rgba(154, 0, 2, 0.25);
+  color: transparent;
+}
+
+/* Base style resets */
+body {
+  overflow-x: hidden;
+}
