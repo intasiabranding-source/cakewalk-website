@@ -313,6 +313,38 @@
   ],
   "adminPassword": "cakewalkbyIndhu@1",
   "orders": [],
-  "stories": [],
-  "reviews": []
+  "stories": [
+    {
+      "id": "st-1",
+      "title": "Handcrafted Chocolate Cake",
+      "desc": "Watch our signature rich chocolate sponge smothered in velvety milk chocolate ganache.",
+      "videoUrl": "https://assets.mixkit.co/videos/preview/mixkit-pouring-chocolate-glaze-on-a-cake-41552-large.mp4"
+    },
+    {
+      "id": "st-2",
+      "title": "Cake Piping Artistry",
+      "desc": "Watch the beautiful creation of multi-tiered custom rose piping in slow motion.",
+      "videoUrl": "https://assets.mixkit.co/videos/preview/mixkit-decorating-a-cake-with-cream-41551-large.mp4"
+    },
+    {
+      "id": "st-3",
+      "title": "Fluffy Powdered Sugar Decorating",
+      "desc": "A gorgeous slow-motion sprinkle of powdered sugar on our fresh premium desserts.",
+      "videoUrl": "https://assets.mixkit.co/videos/preview/mixkit-slow-motion-of-sprinkling-powdered-sugar-on-a-dessert-41554-large.mp4"
+    },
+    {
+      "id": "st-4",
+      "title": "Finishing Touches",
+      "desc": "Placing the final fresh cherry on top of our signature red velvet cupcakes.",
+      "videoUrl": "https://assets.mixkit.co/videos/preview/mixkit-putting-cherry-on-top-of-a-cupcake-41553-large.mp4"
+    }
+  ],
+  "reviews": [
+    {
+      "id": "rev-1782206638361",
+      "testimonial": "Baking magic! Absolute perfection.",
+      "by": "Name, Location",
+      "rating": 5
+    }
+  ]
 }

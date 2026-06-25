@@ -503,20 +503,27 @@ function App() {
       .map(item => `• ${item.quantity}x ${item.name}`)
       .join('\n');
 
-    const message = `🎂 NEW CAKE WALK ORDER REQUEST 🎂
-----------------------------------
-👤 Customer Details:
-• Name: ${formData.name}
-• Phone: ${formData.phone}
-• Delivery Date: ${formData.date}
-${formData.notes ? `• Design Notes: ${formData.notes}` : ''}
+    const message = `🌸 *CAKE WALK | CUSTOM ORDER REQUEST* 🌸
+--------------------------------------------------
+Thank you for choosing Cake Walk by Indhu Prabakar. We are thrilled to craft something special for your celebration!
 
-🛒 Selected Items:
+📋 *ORDER SUMMARY*
+--------------------------------------------------
+👤 *Customer Name:* ${formData.name}
+📞 *Contact Number:* ${formData.phone}
+📅 *Preferred Delivery Date:* ${formData.date}
+
+🛒 *SELECTED DELICACIES:*
 ${itemsText}
 
-----------------------------------
-Thank you for ordering with Cake Walk! 🌸
-(Order request sent from cakewalk.com)`;
+✨ *SPECIAL INSTRUCTIONS & DESIGN NOTES:*
+${formData.notes || 'None'}
+
+--------------------------------------------------
+⭐ *WHAT HAPPENS NEXT?*
+Once we receive this request, we will review our baking schedule, calculate the custom design quote, and reply here to confirm your slot. 
+
+Thank you for trusting Cake Walk to sweeten your memories! 🎂✨`;
 
     const encodedMessage = encodeURIComponent(message);
     const whatsappUrl = `https://wa.me/917358944114?text=${encodedMessage}`;
@@ -541,11 +548,31 @@ Thank you for ordering with Cake Walk! 🌸
 
     const itemsText = cart
       .map(item => `• ${item.quantity}x ${item.name}`)
-      .join('%0D%0A');
+      .join('\n');
 
-    const bodyText = `New Cake Walk Order Request%0D%0A%0D%0AName: ${formData.name}%0D%0APhone: ${formData.phone}%0D%0ADelivery Date: ${formData.date}%0D%0ANotes: ${formData.notes || 'None'}%0D%0A%0D%0AItems:%0D%0A${itemsText}%0D%0A%0D%0ASent from Cake Walk Website.`;
+    const bodyText = `CAKE WALK | CUSTOM ORDER REQUEST
+--------------------------------------------------
+Thank you for choosing Cake Walk by Indhu Prabakar. We are thrilled to craft something special for your celebration!
 
-    const mailtoUrl = `mailto:Cakewalk10@gmail.com?subject=Cake Walk Order Request - ${formData.name}&body=${bodyText}`;
+ORDER SUMMARY
+--------------------------------------------------
+Customer Name: ${formData.name}
+Contact Number: ${formData.phone}
+Preferred Delivery Date: ${formData.date}
+
+SELECTED DELICACIES:
+${itemsText}
+
+SPECIAL INSTRUCTIONS & DESIGN NOTES:
+${formData.notes || 'None'}
+
+--------------------------------------------------
+WHAT HAPPENS NEXT?
+Once we receive this request, we will review our baking schedule, calculate the custom design quote, and reply to confirm your slot. 
+
+Thank you for trusting Cake Walk to sweeten your memories!`;
+
+    const mailtoUrl = `mailto:Cakewalk10@gmail.com?subject=Cake Walk Order Request - ${formData.name}&body=${encodeURIComponent(bodyText)}`;
     window.location.href = mailtoUrl;
     setCart([]);
     showToast("Order logged and drafted in email client!");
@@ -1392,7 +1419,7 @@ Thank you for ordering with Cake Walk! 🌸
               >
                 <Instagram size={15} /> @Cakewalkbyindhu
               </a>
-              <p className="font-sans font-medium text-forestGreen/75">📍 Chennai, India | 📞 +91 7358944114 | ✉️ Cakewalk10@gmail.com</p>
+              <p className="font-sans font-medium text-forestGreen/75">📍 Tiruppur, Tamilnadu | 📞 +91 7358944114 | ✉️ Cakewalk10@gmail.com</p>
               
               {/* ADMIN PORTAL LOGIN LINK */}
               <button 
