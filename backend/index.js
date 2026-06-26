@@ -150,17 +150,8 @@ const writeDB = async (data) => {
   return writeLocalDB(data);
 };
 
-// Configure Multer for File Uploads (Images and Videos)
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadsDir);
-  },
-  filename: (req, file, cb) => {
-    const fileExt = path.extname(file.originalname);
-    const uniqueName = `${Date.now()}-${Math.round(Math.random() * 1e9)}${fileExt}`;
-    cb(null, uniqueName);
-  }
-});
+// Configure Multer for File Uploads (Images and Videos using Memory Storage)
+const storage = multer.memoryStorage();
 const upload = multer({ 
   storage,
   limits: { fileSize: 50 * 1024 * 1024 } // 50MB limit
@@ -204,22 +195,29 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
   // If Vercel Blob token is set, upload to Vercel Blob CDN
   if (process.env.BLOB_READ_WRITE_TOKEN) {
     try {
-      const fileBuffer = fs.readFileSync(req.file.path);
-      const blob = await put(req.file.filename, fileBuffer, {
+      const blob = await put(req.file.originalname, req.file.buffer, {
         access: 'public',
         token: process.env.BLOB_READ_WRITE_TOKEN
       });
-      // Delete temporary local file
-      fs.unlinkSync(req.file.path);
       return res.json({ success: true, url: blob.url });
     } catch (err) {
       console.error("Vercel Blob upload failed, falling back to local file path:", err);
     }
   }
 
-  // Fallback to local server serving url
-  const fileUrl = `/uploads/${req.file.filename}`;
-  res.json({ success: true, url: fileUrl });
+  // Fallback to writing file locally if running locally
+  const fileExt = path.extname(req.file.originalname);
+  const uniqueName = `${Date.now()}-${Math.round(Math.random() * 1e9)}${fileExt}`;
+  const localFilePath = path.join(uploadsDir, uniqueName);
+  
+  try {
+    fs.writeFileSync(localFilePath, req.file.buffer);
+    const fileUrl = `/uploads/${uniqueName}`;
+    res.json({ success: true, url: fileUrl });
+  } catch (err) {
+    console.error("Failed to write fallback local file:", err);
+    res.status(500).json({ success: false, message: "Upload failed." });
+  }
 });
 
 // 4. Get order log
