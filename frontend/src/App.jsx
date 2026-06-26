@@ -270,25 +270,23 @@ const StoryCard = ({ story, isPlaying, onTogglePlay }) => {
   );
 };
 
-// Helper to perform multipart file uploads to Express Backend
-const uploadFileToServer = async (file) => {
-  const formData = new FormData();
-  formData.append('file', file);
-  
-  const response = await fetch('/api/upload', {
-    method: 'POST',
-    body: formData
+// Helper to convert a file to a base64 Data URL
+const fileToBase64 = (file) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => reject(error);
   });
-  
-  if (!response.ok) {
-    throw new Error('Upload to backend failed');
-  }
-  
-  const data = await response.json();
-  return data.url;
 };
 
-// Helper for local video file uploads sending directly to backend
+// Helper to convert media uploads to local Base64 URLs
+const uploadFileToServer = async (file) => {
+  const base64Data = await fileToBase64(file);
+  return base64Data;
+};
+
+// Helper for local video file uploads converting to Base64
 const handleVideoUpload = async (e, callback, showToast) => {
   const file = e.target.files?.[0];
   if (file) {
@@ -297,64 +295,50 @@ const handleVideoUpload = async (e, callback, showToast) => {
       return;
     }
     try {
-      showToast("Uploading video to server...");
+      showToast("Processing video...");
       const url = await uploadFileToServer(file);
       callback(url);
-      showToast("Video uploaded successfully!");
+      showToast("Video processed successfully!");
     } catch (err) {
       console.error(err);
-      showToast("Video upload failed.");
+      showToast("Video processing failed.");
     }
   }
 };
 
 function App() {
-  // Centralized site state (CMS backed by Express Backend + default fallback)
+  // Centralized site state (CMS backed by LocalStorage with default fallback)
   const [siteData, setSiteData] = useState(DEFAULT_CONTENT);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
 
-  // Load from Express Backend on mount
+  // Load from LocalStorage on mount
   useEffect(() => {
-    const loadFromServer = async () => {
-      try {
-        const response = await fetch('/api/content');
-        if (response.ok) {
-          const data = await response.json();
-          // Merge with defaults to prevent broken states
-          const merged = { ...DEFAULT_CONTENT, ...data };
-          if (merged.adminPassword === 'cakewalk2026') {
-            merged.adminPassword = 'cakewalkbyIndhu@1';
-          }
-          setSiteData(merged);
+    try {
+      const stored = localStorage.getItem('cakewalk_cms_data');
+      if (stored) {
+        const data = JSON.parse(stored);
+        // Merge with defaults to prevent broken states
+        const merged = { ...DEFAULT_CONTENT, ...data };
+        if (merged.adminPassword === 'cakewalk2026') {
+          merged.adminPassword = 'cakewalkbyIndhu@1';
         }
-      } catch (e) {
-        console.error("Error loading data from Express Backend:", e);
-      } finally {
-        setIsDataLoaded(true);
+        setSiteData(merged);
       }
-    };
-    loadFromServer();
+    } catch (e) {
+      console.error("Error loading data from LocalStorage:", e);
+    } finally {
+      setIsDataLoaded(true);
+    }
   }, []);
 
-  // Sync to Express Backend database
+  // Sync changes directly to LocalStorage
   useEffect(() => {
     if (!isDataLoaded) return;
-
-    const syncData = async () => {
-      try {
-        await fetch('/api/content', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(siteData)
-        });
-      } catch (e) {
-        console.error("Failed to sync to backend database:", e);
-      }
-    };
-
-    syncData();
+    try {
+      localStorage.setItem('cakewalk_cms_data', JSON.stringify(siteData));
+    } catch (e) {
+      console.error("Failed to sync to LocalStorage:", e);
+    }
   }, [siteData, isDataLoaded]);
 
   // Client States
