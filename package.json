@@ -1,5 +1,16 @@
 {
+  "name": "cakewalk-root",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "cd frontend && npm install && npm run build",
+    "vercel-build": "cd frontend && npm install && npm run build"
+  },
   "dependencies": {
-    "@neondatabase/serverless": "^1.1.0"
+    "@vercel/blob": "^2.4.1",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "mongodb": "^7.4.0",
+    "multer": "^2.2.0"
   }
 }
