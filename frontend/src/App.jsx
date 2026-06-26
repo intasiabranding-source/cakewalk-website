@@ -46,6 +46,7 @@ import 'swiper/css/effect-cards';
 // Import default images
 import defaultHeroCakeImg from './assets/hero_cake.png';
 import defaultFounderPortraitImg from './assets/founder_portrait.png';
+import vanillaCakeImg from './assets/vanilla_cake.png';
 
 // Review component
 import { StaggerTestimonials } from './components/ui/stagger-testimonials';
@@ -117,7 +118,7 @@ const DEFAULT_CONTENT = {
   },
   menuItems: [
     // Fresh Cream Cakes
-    { id: 'fc-1', name: 'Vanilla Cake', price: 650, category: 'Fresh Cream Cakes', tag: 'Classic', desc: 'Fluffy vanilla sponge layered with rich white cream and Madagascar vanilla bean.', image: '' },
+    { id: 'fc-1', name: 'Vanilla Cake', price: 650, category: 'Fresh Cream Cakes', tag: 'Classic', desc: 'Fluffy vanilla sponge layered with rich white cream and Madagascar vanilla bean.', image: vanillaCakeImg },
     { id: 'fc-2', name: 'Chocolate Cake', price: 900, category: 'Fresh Cream Cakes', tag: 'Chocolate', desc: 'Decadent chocolate sponge smothered in velvety milk chocolate ganache.', image: '' },
     { id: 'fc-3', name: 'Butterscotch Cake', price: 1100, category: 'Fresh Cream Cakes', tag: 'Classic', desc: 'Rich cake with crunchy caramelized butterscotch pieces and soft cream.', image: '' },
     { id: 'fc-4', name: 'Coffee Mocha Cake', price: 1250, category: 'Fresh Cream Cakes', tag: 'Premium', desc: 'Fresh espresso-infused sponge with silky chocolate cream layers.', image: '' },
@@ -1065,16 +1066,36 @@ Thank you for trusting Cake Walk to sweeten your memories!`;
                       <div className="flex-grow flex flex-col justify-between h-full">
                         <div>
                           {/* Photo container for customized items */}
-                          {item.image ? (
-                            <div className="w-full h-36 rounded-2xl overflow-hidden mb-3 border border-forestGreen/15 bg-warmCream">
-                              <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
-                            </div>
-                          ) : (
-                            <div className="w-full h-36 rounded-2xl mb-3 border border-dashed border-forestGreen/25 bg-warmCream/40 flex flex-col items-center justify-center text-forestGreen/40">
-                              <Sparkles size={24} className="mb-1 text-crispCarrot animate-pulse" />
-                              <span className="font-sans text-[10px] font-bold uppercase tracking-wider">Cake Walk Fresh</span>
-                            </div>
-                          )}
+                          <div className="relative group">
+                            {item.image ? (
+                              <div className="w-full h-36 rounded-2xl overflow-hidden mb-3 border border-forestGreen/15 bg-warmCream">
+                                <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                              </div>
+                            ) : (
+                              <div className="w-full h-36 rounded-2xl mb-3 border border-dashed border-forestGreen/25 bg-warmCream/40 flex flex-col items-center justify-center text-forestGreen/40">
+                                <Sparkles size={24} className="mb-1 text-crispCarrot animate-pulse" />
+                                <span className="font-sans text-[10px] font-bold uppercase tracking-wider">Cake Walk Fresh</span>
+                              </div>
+                            )}
+                            {adminOpen && (
+                              <div className="absolute inset-0 bg-black/45 rounded-2xl mb-3 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                <label className="cursor-pointer bg-warmCream text-forestGreen px-3 py-1.5 rounded-xl font-sans text-[10px] font-bold flex items-center gap-1.5 shadow-md hover:scale-105 transition-all">
+                                  <Upload size={10} /> Change Photo
+                                  <input 
+                                    type="file" 
+                                    accept="image/*" 
+                                    className="hidden"
+                                    onChange={(e) => handleImageUpload(e, (base64) => {
+                                      setSiteData(prev => ({
+                                        ...prev,
+                                        menuItems: prev.menuItems.map(m => m.id === item.id ? { ...m, image: base64 } : m)
+                                      }));
+                                    })}
+                                  />
+                                </label>
+                              </div>
+                            )}
+                          </div>
 
                           {/* Card Header (Category & Tag) */}
                           <div className="flex justify-between items-center mb-2.5">
@@ -1978,11 +1999,30 @@ Thank you for trusting Cake Walk to sweeten your memories!`;
                               </td>
                               <td className="p-4 font-serif text-sm font-semibold text-forestGreen">₹{item.price}</td>
                               <td className="p-4 text-center">
-                                {item.image ? (
-                                  <img src={item.image} alt="preview" className="w-8 h-8 rounded object-cover mx-auto" />
-                                ) : (
-                                  <span className="text-[10px] text-forestGreen/40">Default</span>
-                                )}
+                                <div className="flex flex-col items-center gap-1.5 justify-center">
+                                  {item.image ? (
+                                    <img src={item.image} alt="preview" className="w-8 h-8 rounded object-cover" />
+                                  ) : (
+                                    <span className="text-[10px] text-forestGreen/40 mb-0.5">Default</span>
+                                  )}
+                                  <div className="relative">
+                                    <input 
+                                      type="file" 
+                                      accept="image/*"
+                                      onChange={(e) => handleImageUpload(e, (base64) => {
+                                        setSiteData(prev => ({
+                                          ...prev,
+                                          menuItems: prev.menuItems.map(m => m.id === item.id ? { ...m, image: base64 } : m)
+                                        }));
+                                      })}
+                                      className="hidden" 
+                                      id={`tableImgUpload-${item.id}`}
+                                    />
+                                    <label htmlFor={`tableImgUpload-${item.id}`} className="px-2 py-0.5 rounded bg-warmCream hover:bg-warmCream border border-forestGreen/25 font-sans text-[9px] font-bold cursor-pointer text-forestGreen hover:text-crispCarrot transition-colors">
+                                      Upload
+                                    </label>
+                                  </div>
+                                </div>
                               </td>
                               <td className="p-4 text-right space-x-3">
                                 <button 

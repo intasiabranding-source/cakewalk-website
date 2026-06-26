@@ -5,7 +5,11 @@ import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 import { put } from '@vercel/blob';
-import { neon } from '@neondatabase/serverless';
+import { MongoClient } from 'mongodb';
+import dotenv from 'dotenv';
+
+// Load .env environment variables
+dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -13,10 +17,25 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Enable CORS and increase JSON payload limits for large site state transfers
-app.use(cors());
-app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ limit: '50mb', extended: true }));
+// Setup MongoDB client if MONGODB_URI is configured
+let mongoClient = null;
+let mongoDb = null;
+
+const getMongoDb = async () => {
+  if (mongoDb) return mongoDb;
+  if (!process.env.MONGODB_URI) return null;
+  try {
+    mongoClient = new MongoClient(process.env.MONGODB_URI);
+    await mongoClient.connect();
+    // Parse DB name from URI or default to "cakewalk"
+    mongoDb = mongoClient.db();
+    console.log("Connected successfully to MongoDB.");
+    return mongoDb;
+  } catch (err) {
+    console.error("Failed to connect to MongoDB:", err);
+    return null;
+  }
+};
 
 // Ensure uploads folder exists
 const uploadsDir = path.join(__dirname, 'uploads');
@@ -55,74 +74,76 @@ const writeLocalDB = (data) => {
   }
 };
 
-// Database Initialization (Creates table if it doesn't exist, migrates local db.json)
+// Database Initialization (Migrates local db.json to MongoDB if empty)
 const initDb = async () => {
-  if (process.env.DATABASE_URL) {
+  const db = await getMongoDb();
+  if (db) {
     try {
-      const sql = neon(process.env.DATABASE_URL);
-      // Create table
-      await sql`
-        CREATE TABLE IF NOT EXISTS cms_store (
-          id VARCHAR(50) PRIMARY KEY,
-          data JSONB NOT NULL
-        )
-      `;
-      // Check if default entry exists
-      const rows = await sql`SELECT id FROM cms_store WHERE id = 'default'`;
-      if (rows.length === 0) {
-        console.log("Neon database empty. Migrating local db.json data to Neon...");
+      const collection = db.collection('cms_store');
+      const doc = await collection.findOne({ id: 'default' });
+      if (!doc) {
+        console.log("MongoDB is empty. Migrating local db.json data to MongoDB...");
         const localData = readLocalDB();
-        await sql`INSERT INTO cms_store (id, data) VALUES ('default', ${localData})`;
-        console.log("Migration to Neon complete!");
+        await collection.updateOne(
+          { id: 'default' },
+          { $set: { data: localData } },
+          { upsert: true }
+        );
+        console.log("Migration to MongoDB complete!");
       } else {
-        console.log("Neon database contains data. Ready.");
+        console.log("MongoDB contains data. Ready.");
       }
     } catch (err) {
-      console.error("Error initializing Neon PostgreSQL database:", err);
+      console.error("Error initializing MongoDB collection:", err);
     }
   } else {
-    console.log("No DATABASE_URL found. Running in local file database mode.");
+    console.log("No MONGODB_URI found. Running in local file database mode.");
   }
 };
 
-// Run schema initialization
+// Run database initialization
 initDb();
 
-// Helper to read DB (supports Neon DB with local fallback)
+// Helper to read DB (supports MongoDB with local fallback)
 const readDB = async () => {
-  if (process.env.DATABASE_URL) {
+  const db = await getMongoDb();
+  if (db) {
     try {
-      const sql = neon(process.env.DATABASE_URL);
-      const rows = await sql`SELECT data FROM cms_store WHERE id = 'default'`;
-      if (rows.length > 0) {
-        return rows[0].data;
+      const collection = db.collection('cms_store');
+      const doc = await collection.findOne({ id: 'default' });
+      if (doc && doc.data) {
+        return doc.data;
       } else {
-        // Table exists but is empty, populate and return local data
+        // Populates and returns local data if database configuration is empty
         const localData = readLocalDB();
-        await sql`INSERT INTO cms_store (id, data) VALUES ('default', ${localData})`;
+        await collection.updateOne(
+          { id: 'default' },
+          { $set: { data: localData } },
+          { upsert: true }
+        );
         return localData;
       }
     } catch (err) {
-      console.error("Error reading from Neon DB:", err);
+      console.error("Error reading from MongoDB:", err);
     }
   }
   return readLocalDB();
 };
 
-// Helper to write DB (supports Neon DB with local fallback)
+// Helper to write DB (supports MongoDB with local fallback)
 const writeDB = async (data) => {
-  if (process.env.DATABASE_URL) {
+  const db = await getMongoDb();
+  if (db) {
     try {
-      const sql = neon(process.env.DATABASE_URL);
-      await sql`
-        INSERT INTO cms_store (id, data) 
-        VALUES ('default', ${data})
-        ON CONFLICT (id) 
-        DO UPDATE SET data = ${data}
-      `;
+      const collection = db.collection('cms_store');
+      await collection.updateOne(
+        { id: 'default' },
+        { $set: { data: data } },
+        { upsert: true }
+      );
       return true;
     } catch (err) {
-      console.error("Error writing to Neon DB:", err);
+      console.error("Error writing to MongoDB:", err);
       return false;
     }
   }
