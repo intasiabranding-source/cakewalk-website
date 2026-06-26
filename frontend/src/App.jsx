@@ -270,23 +270,25 @@ const StoryCard = ({ story, isPlaying, onTogglePlay }) => {
   );
 };
 
-// Helper to convert a file to a base64 Data URL
-const fileToBase64 = (file) => {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = (error) => reject(error);
-  });
-};
-
-// Helper to convert media uploads to local Base64 URLs
+// Helper to perform multipart file uploads to Express Backend
 const uploadFileToServer = async (file) => {
-  const base64Data = await fileToBase64(file);
-  return base64Data;
+  const formData = new FormData();
+  formData.append('file', file);
+  
+  const response = await fetch('/api/upload', {
+    method: 'POST',
+    body: formData
+  });
+  
+  if (!response.ok) {
+    throw new Error('Upload to backend failed');
+  }
+  
+  const data = await response.json();
+  return data.url;
 };
 
-// Helper for local video file uploads converting to Base64
+// Helper for local video file uploads sending directly to backend
 const handleVideoUpload = async (e, callback, showToast) => {
   const file = e.target.files?.[0];
   if (file) {
@@ -295,50 +297,64 @@ const handleVideoUpload = async (e, callback, showToast) => {
       return;
     }
     try {
-      showToast("Processing video...");
+      showToast("Uploading video to server...");
       const url = await uploadFileToServer(file);
       callback(url);
-      showToast("Video processed successfully!");
+      showToast("Video uploaded successfully!");
     } catch (err) {
       console.error(err);
-      showToast("Video processing failed.");
+      showToast("Video upload failed.");
     }
   }
 };
 
 function App() {
-  // Centralized site state (CMS backed by LocalStorage with default fallback)
+  // Centralized site state (CMS backed by Express Backend + default fallback)
   const [siteData, setSiteData] = useState(DEFAULT_CONTENT);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
 
-  // Load from LocalStorage on mount
+  // Load from Express Backend on mount
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem('cakewalk_cms_data');
-      if (stored) {
-        const data = JSON.parse(stored);
-        // Merge with defaults to prevent broken states
-        const merged = { ...DEFAULT_CONTENT, ...data };
-        if (merged.adminPassword === 'cakewalk2026') {
-          merged.adminPassword = 'cakewalkbyIndhu@1';
+    const loadFromServer = async () => {
+      try {
+        const response = await fetch('/api/content');
+        if (response.ok) {
+          const data = await response.json();
+          // Merge with defaults to prevent broken states
+          const merged = { ...DEFAULT_CONTENT, ...data };
+          if (merged.adminPassword === 'cakewalk2026') {
+            merged.adminPassword = 'cakewalkbyIndhu@1';
+          }
+          setSiteData(merged);
         }
-        setSiteData(merged);
+      } catch (e) {
+        console.error("Error loading data from Express Backend:", e);
+      } finally {
+        setIsDataLoaded(true);
       }
-    } catch (e) {
-      console.error("Error loading data from LocalStorage:", e);
-    } finally {
-      setIsDataLoaded(true);
-    }
+    };
+    loadFromServer();
   }, []);
 
-  // Sync changes directly to LocalStorage
+  // Sync to Express Backend database
   useEffect(() => {
     if (!isDataLoaded) return;
-    try {
-      localStorage.setItem('cakewalk_cms_data', JSON.stringify(siteData));
-    } catch (e) {
-      console.error("Failed to sync to LocalStorage:", e);
-    }
+
+    const syncData = async () => {
+      try {
+        await fetch('/api/content', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(siteData)
+        });
+      } catch (e) {
+        console.error("Failed to sync to backend database:", e);
+      }
+    };
+
+    syncData();
   }, [siteData, isDataLoaded]);
 
   // Client States
